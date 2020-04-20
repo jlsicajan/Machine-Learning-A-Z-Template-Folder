@@ -35,9 +35,23 @@ labelencoder_x = LabelEncoder()
 independent_variables[:, 0] = labelencoder_x.fit_transform(independent_variables[:, 0])
 onehotencoder = OneHotEncoder()
 
-#Encoding categorial data\
+#Encoding categorial data (independent variable)
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 
 column_trasformer = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [0])], remainder='passthrough')
 independent_variables = np.array(column_trasformer.fit_transform(independent_variables))
+
+#Encoding categorial data (dependent variable)
+from sklearn.preprocessing import LabelEncoder
+label_encoder = LabelEncoder()
+dependent_variables = label_encoder.fit_transform(dependent_variables)
+
+#Feature Scaling (Standardisation)
+from sklearn.preprocessing import StandardScaler
+standard_scaler = StandardScaler()
+independent_variables = standard_scaler.fit_transform(independent_variables)
+
+#Splitting the dataset into the Training set and Test set
+from sklearn.model_selection import train_test_split
+dependent_train, dependent_test, independent_train, independent_test = train_test_split(dependent_variables, independent_variables, test_size=0.2, random_state=0)
